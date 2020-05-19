@@ -5,9 +5,11 @@ import graphql.schema.GraphQLSchema;
 import graphql.schema.DataFetcher;
 import graphql.schema.StaticDataFetcher;
 import graphql.schema.GraphQLObjectType;
+
 import static graphql.schema.GraphQLArgument.newArgument;
 import static graphql.schema.GraphQLList.list;
 import static graphql.schema.GraphQLNonNull.nonNull;
+import static graphql.schema.GraphQLTypeReference.typeRef;
 
 import static graphql.Scalars.GraphQLString;
 import static graphql.Scalars.GraphQLID;
@@ -55,9 +57,10 @@ class GraphQLSchemaProvider {
                                       .type(GraphQLID)
                                     )
                                     .field(newFieldDefinition()
-                                      .name("authorId")
-                                      .description("Author ID of the Book")
-                                      .type(GraphQLID)
+                                      .name("author")
+                                      .description("Author of the Book")
+                                      .type(typeRef("Author"))
+                                      .dataFetcher(DataFetcherProvider.getAuthorOfBook())
                                     )
                                     .build();
       
@@ -78,6 +81,12 @@ class GraphQLSchemaProvider {
                                       .name("lastName")
                                       .description("Author's last Name")
                                       .type(GraphQLID)
+                                    ) 
+                                    .field(newFieldDefinition()
+                                      .name("books")
+                                      .description("Author's books")
+                                      .type(list(typeRef("Book")))
+                                      .dataFetcher(DataFetcherProvider.getBooksOfAuthor())
                                     )
                                     .build();
       
@@ -88,7 +97,7 @@ class GraphQLSchemaProvider {
                                       .name("books")
                                       .description("Return all books")
                                       .type(list(bookType))
-                                      .dataFetcher(DataFetcherProvider.getBooksDataFetcher())
+                                      .dataFetcher(DataFetcherProvider.getBooks())
                                     ) 
                                     .field(newFieldDefinition()
                                       .name("book")
@@ -98,13 +107,13 @@ class GraphQLSchemaProvider {
                                         .name("id")
                                         .description("id of the book, should be non null")
                                         .type(nonNull(GraphQLID)))
-                                      .dataFetcher(DataFetcherProvider.getBookByIdDataFetcher())
+                                      .dataFetcher(DataFetcherProvider.getBookById())
                                       ) 
                                     .field(newFieldDefinition()
                                       .name("authors")
                                       .description("Return all authors")
                                       .type(list(authorType))
-                                      .dataFetcher(DataFetcherProvider.getAuthorsDataFetcher())
+                                      .dataFetcher(DataFetcherProvider.getAuthors())
                                     )
                                     .field(newFieldDefinition()
                                       .name("author")
@@ -114,7 +123,7 @@ class GraphQLSchemaProvider {
                                         .name("id")
                                         .description("id of the book, should be non null")
                                         .type(nonNull(GraphQLID)))
-                                      .dataFetcher(DataFetcherProvider.getAuthorByIdDataFetcher())
+                                      .dataFetcher(DataFetcherProvider.getAuthorById())
                                     )
                                     .build();                                  
       

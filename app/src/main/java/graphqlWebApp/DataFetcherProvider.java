@@ -4,6 +4,7 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import com.google.common.collect.ImmutableMap;
+import java.util.stream.Collectors;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -43,13 +44,13 @@ class DataFetcherProvider {
                     "lastName", "author-3")
           );
 
-    public static DataFetcher getBooksDataFetcher() {
+    public static DataFetcher getBooks() {
         return dataFetchingEnvironment -> {
             return books;
         };
     }
 
-    public static DataFetcher getBookByIdDataFetcher() {
+    public static DataFetcher getBookById() {
         return dataFetchingEnvironment -> {
             String bookId = dataFetchingEnvironment.getArgument("id");
             return books
@@ -60,13 +61,13 @@ class DataFetcherProvider {
         };
     }
 
-    public static DataFetcher getAuthorsDataFetcher() {
+    public static DataFetcher getAuthors() {
         return dataFetchingEnvironment -> {
             return authors;
         };
     }
 
-    public static DataFetcher getAuthorByIdDataFetcher() {
+    public static DataFetcher getAuthorById() {
         return dataFetchingEnvironment -> {
             String authorId = dataFetchingEnvironment.getArgument("id");
             return authors
@@ -76,5 +77,27 @@ class DataFetcherProvider {
                     .orElse(null);
         };
     }
-  
+
+    public static DataFetcher getAuthorOfBook() {
+        return dataFetchingEnvironment -> {
+            Map<String,String> book = dataFetchingEnvironment.getSource();
+            String authorId = book.get("authorId");
+            return authors
+                    .stream()
+                    .filter(author -> author.get("id").equals(authorId))
+                    .findFirst()
+                    .orElse(null);
+        };
+    }
+    
+    public static DataFetcher getBooksOfAuthor() {
+        return dataFetchingEnvironment -> {
+            Map<String,String> author = dataFetchingEnvironment.getSource();
+            String authorId = author.get("id");
+            return books
+                    .stream()
+                    .filter(book -> book.get("authorId").equals(authorId))
+                    .collect(Collectors.toList());
+        };
+    }
 }
