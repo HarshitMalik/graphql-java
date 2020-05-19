@@ -13,7 +13,7 @@ class GraphQLConfigurationProvider {
 
   private GraphQLConfigurationProvider() {
     configuration = GraphQLConfiguration
-        .with(GraphQLSchemaProvider.getInstance().getSchema())
+        .with(GraphQLSchemaProvider.getSchema())
         .with(GraphQLQueryInvoker.newBuilder()
             .withExecutionStrategyProvider(new DefaultExecutionStrategyProvider(
                 new AsyncExecutionStrategy(),

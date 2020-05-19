@@ -3,46 +3,13 @@ package graphQLWebApp;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
-import com.google.common.collect.ImmutableMap;
 import java.util.stream.Collectors;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 class DataFetcherProvider {
 
-    private static List<Map<String, String>> books = Arrays.asList(
-            ImmutableMap.of("id", "1",
-                    "name", "Book 1",
-                    "authorId", "1"),
-            ImmutableMap.of("id", "2",
-                    "name", "Book 2",
-                    "authorId", "1"),
-            ImmutableMap.of("id", "3",
-                    "name", "Book 3",
-                    "authorId", "2"),
-            ImmutableMap.of("id", "4",
-                    "name", "Book 4",
-                    "authorId", "2"),
-            ImmutableMap.of("id", "5",
-                    "name", "Book 5",
-                    "authorId", "3"),
-            ImmutableMap.of("id", "6",
-                    "name", "Book 6",
-                    "authorId", "3")
-          );
-
-    private static List<Map<String, String>> authors = Arrays.asList(
-            ImmutableMap.of("id", "1",
-                    "firstName", "author-1",
-                    "lastName", "author-1"),
-            ImmutableMap.of("id", "2",
-                    "firstName", "author-2",
-                    "lastName", "author-2"),
-            ImmutableMap.of("id", "3",
-                    "firstName", "author-3",
-                    "lastName", "author-3")
-          );
+    private static List<Map<String, String>> books = new ArrayList<Map<String, String>>();
+    private static List<Map<String, String>> authors = new ArrayList<Map<String, String>>();
 
     public static DataFetcher getBooks() {
         return dataFetchingEnvironment -> {
@@ -98,6 +65,22 @@ class DataFetcherProvider {
                     .stream()
                     .filter(book -> book.get("authorId").equals(authorId))
                     .collect(Collectors.toList());
+        };
+    }
+
+    public static DataFetcher addBook() {
+        return dataFetchingEnvironment -> {
+            Map<String,String> book = dataFetchingEnvironment.getArgument("input");
+            books.add(book);
+            return book;
+        };
+    }
+
+    public static DataFetcher addAuthor() {
+        return dataFetchingEnvironment -> {
+            Map<String,String> author = dataFetchingEnvironment.getArgument("input");
+            authors.add(author);
+            return author;
         };
     }
 }

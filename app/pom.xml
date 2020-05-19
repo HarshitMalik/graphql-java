@@ -24,11 +24,6 @@
       <version>3.0.1</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>14.0</version>
-    </dependency>
   </dependencies>
   <build>
     <finalName>app</finalName>
