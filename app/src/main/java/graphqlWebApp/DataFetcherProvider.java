@@ -4,7 +4,10 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
+import java.lang.*;
 import java.util.*;
+import java.io.*;
 
 class DataFetcherProvider {
 
@@ -13,12 +16,14 @@ class DataFetcherProvider {
 
     public static DataFetcher getBooks() {
         return dataFetchingEnvironment -> {
+            System.out.println("Inside getBooks()");
             return books;
         };
     }
 
     public static DataFetcher getBookById() {
         return dataFetchingEnvironment -> {
+            System.out.println("Inside getBookById()");           
             String bookId = dataFetchingEnvironment.getArgument("id");
             return books
                     .stream()
@@ -30,12 +35,14 @@ class DataFetcherProvider {
 
     public static DataFetcher getAuthors() {
         return dataFetchingEnvironment -> {
+            System.out.println("Inside getAuthors()");
             return authors;
         };
     }
 
     public static DataFetcher getAuthorById() {
         return dataFetchingEnvironment -> {
+            System.out.println("Inside getAuthorById()");
             String authorId = dataFetchingEnvironment.getArgument("id");
             return authors
                     .stream()
@@ -47,6 +54,7 @@ class DataFetcherProvider {
 
     public static DataFetcher getAuthorOfBook() {
         return dataFetchingEnvironment -> {
+            System.out.println("Inside getAuthorOfBooks()");
             Map<String,String> book = dataFetchingEnvironment.getSource();
             String authorId = book.get("authorId");
             return authors
@@ -58,7 +66,8 @@ class DataFetcherProvider {
     }
     
     public static DataFetcher getBooksOfAuthor() {
-        return dataFetchingEnvironment -> {
+        return dataFetchingEnvironment -> {            
+            System.out.println("Inside getBooksOfAuthor()");
             Map<String,String> author = dataFetchingEnvironment.getSource();
             String authorId = author.get("id");
             return books
@@ -68,8 +77,26 @@ class DataFetcherProvider {
         };
     }
 
+    public static DataFetcher getCopiesCount() {
+        return dataFetchingEnvironment -> {
+            return CompletableFuture.supplyAsync(
+                () -> {
+                  System.out.println("Inside getCopiesCount");
+                  System.out.println("Sleeping for 3 seconds");
+                  try {
+                        Thread.sleep(3000);
+                  } catch (Exception e) {
+                    System.out.println(e);
+                  }
+                  System.out.println("Fetching data");
+                  return 5;
+            });     
+        };
+    }
+
     public static DataFetcher addBook() {
         return dataFetchingEnvironment -> {
+            System.out.println("Inside addBooks()");
             Map<String,String> book = dataFetchingEnvironment.getArgument("input");
             books.add(book);
             return book;
@@ -78,6 +105,7 @@ class DataFetcherProvider {
 
     public static DataFetcher addAuthor() {
         return dataFetchingEnvironment -> {
+            System.out.println("Inside addAuthor()");
             Map<String,String> author = dataFetchingEnvironment.getArgument("input");
             authors.add(author);
             return author;

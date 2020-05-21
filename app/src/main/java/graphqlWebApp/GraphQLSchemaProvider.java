@@ -12,6 +12,7 @@ import static graphql.schema.GraphQLTypeReference.typeRef;
 
 import static graphql.Scalars.GraphQLString;
 import static graphql.Scalars.GraphQLID;
+import static graphql.Scalars.GraphQLInt;
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLInputObjectField.newInputObjectField;
@@ -38,6 +39,12 @@ class GraphQLSchemaProvider {
                                       .description("Author of the Book")
                                       .type(typeRef("Author"))
                                       .dataFetcher(DataFetcherProvider.getAuthorOfBook())
+                                    )
+                                    .field(newFieldDefinition()
+                                      .name("copies")
+                                      .description("Count of total copies present")
+                                      .type(GraphQLInt)
+                                      .dataFetcher(DataFetcherProvider.getCopiesCount())
                                     )
                                     .build();
       
