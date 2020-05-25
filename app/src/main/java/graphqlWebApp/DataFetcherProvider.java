@@ -23,7 +23,7 @@ class DataFetcherProvider {
 
     public static DataFetcher getBookById() {
         return dataFetchingEnvironment -> {
-            System.out.println("Inside getBookById()");           
+            System.out.println("Inside getBookById()");
             String bookId = dataFetchingEnvironment.getArgument("id");
             return books
                     .stream()
@@ -64,9 +64,9 @@ class DataFetcherProvider {
                     .orElse(null);
         };
     }
-    
+
     public static DataFetcher getBooksOfAuthor() {
-        return dataFetchingEnvironment -> {            
+        return dataFetchingEnvironment -> {
             System.out.println("Inside getBooksOfAuthor()");
             Map<String,String> author = dataFetchingEnvironment.getSource();
             String authorId = author.get("id");
@@ -90,7 +90,7 @@ class DataFetcherProvider {
                   }
                   System.out.println("Fetching data");
                   return 5;
-            });     
+            });
         };
     }
 

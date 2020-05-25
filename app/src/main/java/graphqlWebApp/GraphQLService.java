@@ -1,14 +1,13 @@
 package graphQLWebApp;
 
 import javax.servlet.annotation.WebServlet;
-import graphql.kickstart.servlet.GraphQLHttpServlet;
 import graphql.kickstart.servlet.GraphQLConfiguration;
+import graphql.kickstart.servlet.GraphQLHttpServlet;
 
+@WebServlet(urlPatterns = "/api/graphql")
+public class GraphQLService extends GraphQLHttpServlet {
 
-@WebServlet(urlPatterns = "/graphql")
-public class GraphQLEndpoint extends GraphQLHttpServlet {
-
-     @Override
+  @Override
   protected GraphQLConfiguration getConfiguration() {
     return GraphQLConfigurationProvider.getInstance().getConfiguration();
   }

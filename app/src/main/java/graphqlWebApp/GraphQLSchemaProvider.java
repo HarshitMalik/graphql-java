@@ -20,7 +20,7 @@ import static graphql.schema.GraphQLInputObjectType.newInputObject;
 import static graphql.schema.GraphQLObjectType.newObject;
 
 class GraphQLSchemaProvider {
-      
+
   static GraphQLObjectType bookType = newObject()
                                     .name("Book")
                                     .description("Book Data")
@@ -28,7 +28,7 @@ class GraphQLSchemaProvider {
                                       .name("id")
                                       .description("Book ID")
                                       .type(GraphQLID)
-                                    ) 
+                                    )
                                     .field(newFieldDefinition()
                                       .name("name")
                                       .description("Book Name")
@@ -47,7 +47,7 @@ class GraphQLSchemaProvider {
                                       .dataFetcher(DataFetcherProvider.getCopiesCount())
                                     )
                                     .build();
-      
+
   static GraphQLObjectType authorType = newObject()
                                     .name("Author")
                                     .description("Author Data")
@@ -55,17 +55,17 @@ class GraphQLSchemaProvider {
                                       .name("id")
                                       .description("Author ID")
                                       .type(GraphQLID)
-                                    ) 
+                                    )
                                     .field(newFieldDefinition()
                                       .name("firstName")
                                       .description("Author's First Name")
                                       .type(GraphQLID)
-                                    ) 
+                                    )
                                     .field(newFieldDefinition()
                                       .name("lastName")
                                       .description("Author's last Name")
                                       .type(GraphQLID)
-                                    ) 
+                                    )
                                     .field(newFieldDefinition()
                                       .name("books")
                                       .description("Author's books")
@@ -73,7 +73,7 @@ class GraphQLSchemaProvider {
                                       .dataFetcher(DataFetcherProvider.getBooksOfAuthor())
                                     )
                                     .build();
-      
+
   static GraphQLObjectType queryType = newObject()
                                     .name("Query")
                                     .description("List of queries permissible")
@@ -82,7 +82,7 @@ class GraphQLSchemaProvider {
                                       .description("Return all books")
                                       .type(list(bookType))
                                       .dataFetcher(DataFetcherProvider.getBooks())
-                                    ) 
+                                    )
                                     .field(newFieldDefinition()
                                       .name("book")
                                       .description("Return a book by id")
@@ -92,7 +92,7 @@ class GraphQLSchemaProvider {
                                         .description("id of the book, should be non null")
                                         .type(nonNull(GraphQLID)))
                                       .dataFetcher(DataFetcherProvider.getBookById())
-                                      ) 
+                                      )
                                     .field(newFieldDefinition()
                                       .name("authors")
                                       .description("Return all authors")
@@ -173,8 +173,8 @@ class GraphQLSchemaProvider {
   static GraphQLSchema graphQLSchema = GraphQLSchema.newSchema()
        .query(queryType)
        .mutation(mutationType)
-       .build();                                
-  
+       .build();
+
   public static GraphQLSchema getSchema(){
       return graphQLSchema;
   }
